@@ -1,0 +1,26 @@
+# 凭据与密钥 —— 绝不入库
+cephalon_keys_local.py
+*.token
+token.txt
+.env
+*.key
+
+# 运行状态（含会话 cookie、幂等键、登录二维码、运行响应）
+lucy_state/
+outputs/
+login_qr*.png
+h3_*.json
+*_resp.json
+*_run.json
+*_idem.txt
+cephalon_state.json
+uc_token.txt
+*.session
+*.log
+
+# 生成产物
+*.mp4
+*.webm
+
+__pycache__/
+*.pyc

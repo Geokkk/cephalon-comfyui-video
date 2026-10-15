@@ -1,0 +1,64 @@
+#!/bin/bash
+# 防泄密 pre-push 钩子（随库版本化；clone 后执行 git config core.hooksPath hooks 即生效）
+# 双层检查: ①通用密钥模式（sk-/ghp_/github_pat_/AKIA/私钥块）②本机真实凭据精确值（平台密钥/JWT，
+#   目录可用 CEPHALON_WORKDIR 覆盖，默认 ~/workspace/cephalon，不存在则自动跳过该层）。
+# 背景注记（2026-10-15 根因更正）: 私有仓库+个人免费账户本就没有仓库级 push protection
+#   （需付费 Secret Protection；账户级只护公开仓库）——私有库的真实防线就是本钩子。
+# 误报放行: 确认无害后可用 git push --no-verify 单次跳过。
+
+check_text () {
+  local text="$1" commit="$2"
+  # 1) 通用提供商密钥模式
+  if printf '%s' "$text" | grep -qE 'sk-[A-Za-z0-9_-]{16,}|ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----'; then
+    echo "PRE-PUSH BLOCKED: commit ${commit:0:8} 命中通用密钥模式 (sk-/ghp_/github_pat_/AKIA/私钥块)"
+    return 1
+  fi
+  # 2) 本机真实凭据精确匹配（值不回显）
+  local vals wd
+  wd="${CEPHALON_WORKDIR:-$HOME/workspace/cephalon}"
+  vals=$(CEPHALON_WORKDIR="$wd" python3 - <<'PY' 2>/dev/null
+import os, sys
+wd = os.environ.get("CEPHALON_WORKDIR", "")
+if wd and os.path.isdir(wd):
+    sys.path.insert(0, wd)
+    try:
+        from cephalon_keys import KEY, SECRET
+        print(KEY)
+        print(SECRET)
+    except Exception:
+        pass
+    try:
+        tok = open(os.path.join(wd, 'uc_token.txt')).read().strip()
+        if len(tok) > 40:
+            print(tok)
+    except Exception:
+        pass
+PY
+)
+  if [ -n "$vals" ]; then
+    while IFS= read -r v; do
+      [ -n "$v" ] || continue
+      if printf '%s' "$text" | grep -qF -- "$v"; then
+        echo "PRE-PUSH BLOCKED: commit ${commit:0:8} 含本机真实凭据（平台密钥/JWT）"
+        return 1
+      fi
+    done <<< "$vals"
+  fi
+  return 0
+}
+
+rc=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+    # 新分支推送: 只排除远端已有的引用(--remotes)，不能用 --all（会把本地同名分支算进去导致漏检）
+    range="$local_sha --not --remotes"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+  commits=$(git rev-list $range 2>/dev/null) || continue
+  for c in $commits; do
+    added=$(git show "$c" --format= --unified=0 2>/dev/null | grep -E '^\+' | grep -vE '^\+\+\+')
+    check_text "$added" "$c" || rc=1
+  done
+done
+exit $rc
