@@ -1,7 +1,17 @@
 ---
 name: cephalon-comfyui-video
-description: Use when calling Cephalon Cloud (端脑云) compute for ComfyUI video/image generation via API. HMAC signing pitfalls, orphan-mission prevention, workflow adaptation.
+description: Use when calling Cephalon Cloud (端脑云) compute for ComfyUI video/image
+  generation via API — cloud GPU without a local graphics card. Covers lucy.run
+  Workbench (t2v/i2v/fl2v/r2v, Wan2.2) and self-hosted ComfyUI instances,
+  HMAC signing pitfalls, orphan-mission prevention, workflow adaptation.
+  当用户要用端脑云 / 云端 GPU 跑 ComfyUI、文生视频、图生视频时使用。
+version: 1.1.0
+author: Geokkk
+license: MIT
 category: devops
+metadata:
+  hermes:
+    tags: [comfyui, cephalon, video-generation, text-to-video, image-to-video, wan2-2, cloud-gpu]
 ---
 
 # Cephalon Cloud（端脑云）→ ComfyUI 视频生成 API 链路

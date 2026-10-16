@@ -1,0 +1,75 @@
+{
+  "title": "雨后森林小木屋 · 治愈系日系手绘动画",
+  "chain_note": "首镜 T2V 生成，之后每镜以上一镜尾帧作首帧链式 I2V，保证镜头间画面与画风连续",
+  "resolution": "1280x704",
+  "fps": 24,
+  "frames_per_shot": 121,
+  "fade_seconds": 0.5,
+  "final_duration_estimate_s": 36.83,
+  "shots": [
+    {
+      "id": 1,
+      "length": 121,
+      "mode": "t2v",
+      "positive": "Slow immersive close-up camera gliding gently through wet forest foliage just after rain, transparent raindrops hanging on leaves occasionally dripping, moist lush grass in the foreground, a small wooden cabin hidden deep in the forest faintly visible in the distance, soft golden morning light, tiny glowing dust particles floating in the air, quiet dreamy and serene. Japanese hand-drawn 2D anime style, soft watercolor painted background, low-saturation warm pastel color palette, rich delicate forest plant details, gentle hand-drawn linework, subtle paper texture, soft gentle film grain, morning light filtering through leaves forming soft light beams, healing summer fairy-tale atmosphere, quiet, peaceful and poetic, slow smooth stable camera movement, subtle natural micro-motions.",
+      "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸露，NSFW，塑料感CG，写实3D质感，高饱和刺眼配色，夸张表演，现代城市元素，文字，水印",
+      "seed": 20261001
+    },
+    {
+      "id": 2,
+      "length": 121,
+      "mode": "i2v",
+      "positive": "The camera slowly pushes toward the small wooden cabin, potted flowers on the windowsill, leftover raindrops dripping one by one from the eaves, the wooden door slowly opens and a little girl in a cream-white dress and red rain boots steps out, she looks up at the forest canopy and the sunlight, gently breathes in the fresh morning air, her hair and the hem of her dress swaying softly in the light breeze. Japanese hand-drawn 2D anime style, soft watercolor painted background, low-saturation warm pastel color palette, rich delicate forest plant details, gentle hand-drawn linework, subtle paper texture, soft gentle film grain, morning light filtering through leaves forming soft light beams, healing summer fairy-tale atmosphere, quiet, peaceful and poetic, slow smooth stable camera movement, subtle natural micro-motions. Character with gentle breathing feel.",
+      "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸露，NSFW，塑料感CG，写实3D质感，高饱和刺眼配色，夸张表演，现代城市元素，文字，水印",
+      "seed": 20261002
+    },
+    {
+      "id": 3,
+      "length": 121,
+      "mode": "i2v",
+      "positive": "The little girl looks down and discovers a round fluffy little forest spirit crouching under a large leaf not far from the cabin door, sheltering from the rain, the leaf like its tiny umbrella, the spirit small and furry with innocent pure eyes, the girl shows a curious gentle expression and slowly crouches down with careful light movements, afraid to startle it. Japanese hand-drawn 2D anime style, soft watercolor painted background, low-saturation warm pastel color palette, rich delicate forest plant details, gentle hand-drawn linework, subtle paper texture, soft gentle film grain, morning light filtering through leaves forming soft light beams, healing summer fairy-tale atmosphere, quiet, peaceful and poetic, slow smooth stable camera movement, subtle natural micro-motions. Characters with gentle breathing feel.",
+      "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸露，NSFW，塑料感CG，写实3D质感，高饱和刺眼配色，夸张表演，现代城市元素，文字，水印",
+      "seed": 20261003
+    },
+    {
+      "id": 4,
+      "length": 121,
+      "mode": "i2v",
+      "positive": "The girl takes a small piece of bread from her pocket and gently places it on the ground in front of the little forest spirit, the spirit first watches her carefully and cautiously, the girl keeps still and tender, a quiet warm heartwarming interaction between the two, soft morning light wrapping around them. Japanese hand-drawn 2D anime style, soft watercolor painted background, low-saturation warm pastel color palette, rich delicate forest plant details, gentle hand-drawn linework, subtle paper texture, soft gentle film grain, morning light filtering through leaves forming soft light beams, healing summer fairy-tale atmosphere, quiet, peaceful and poetic, slow smooth stable camera movement, subtle natural micro-motions. Characters with gentle breathing feel.",
+      "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸露，NSFW，塑料感CG，写实3D质感，高饱和刺眼配色，夸张表演，现代城市元素，文字，水印",
+      "seed": 20261004
+    },
+    {
+      "id": 5,
+      "length": 121,
+      "mode": "i2v",
+      "positive": "The little forest spirit slowly reaches out its tiny hand, hugs the bread into its arms, its round eyes suddenly brighten with joy, it blinks happily and tilts its head slightly, the girl watches it with a soft gentle smile, the round fluffy spirit looking adorable and content, restrained natural cute movement, nothing exaggerated. Japanese hand-drawn 2D anime style, soft watercolor painted background, low-saturation warm pastel color palette, rich delicate forest plant details, gentle hand-drawn linework, subtle paper texture, soft gentle film grain, morning light filtering through leaves forming soft light beams, healing summer fairy-tale atmosphere, quiet, peaceful and poetic, slow smooth stable camera movement, subtle natural micro-motions. Characters with gentle breathing feel.",
+      "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸露，NSFW，塑料感CG，写实3D质感，高饱和刺眼配色，夸张表演，现代城市元素，文字，水印",
+      "seed": 20261005
+    },
+    {
+      "id": 6,
+      "length": 121,
+      "mode": "i2v",
+      "positive": "A gentle wind passes through the forest, the trees sway lightly, small flowers and grass leaves on the ground sway together, the last raindrops fall from the cabin eaves, the girl stands up, turns around and starts walking forward along the forest path, the camera slowly and steadily following her movement. Japanese hand-drawn 2D anime style, soft watercolor painted background, low-saturation warm pastel color palette, rich delicate forest plant details, gentle hand-drawn linework, subtle paper texture, soft gentle film grain, morning light filtering through leaves forming soft light beams, healing summer fairy-tale atmosphere, quiet, peaceful and poetic, slow smooth stable camera movement, subtle natural micro-motions. Character with gentle breathing feel.",
+      "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸露，NSFW，塑料感CG，写实3D质感，高饱和刺眼配色，夸张表演，现代城市元素，文字，水印",
+      "seed": 20261006
+    },
+    {
+      "id": 7,
+      "length": 121,
+      "mode": "i2v",
+      "positive": "The little forest spirit hugs the bread in its arms and secretly follows behind the girl with quick tiny steps, the girl seems to sense it, she looks back over her shoulder and shows a soft faint smile, dappled sunlight falling on the forest path, leaves and grass swaying gently. Japanese hand-drawn 2D anime style, soft watercolor painted background, low-saturation warm pastel color palette, rich delicate forest plant details, gentle hand-drawn linework, subtle paper texture, soft gentle film grain, morning light filtering through leaves forming soft light beams, healing summer fairy-tale atmosphere, quiet, peaceful and poetic, slow smooth stable camera movement, subtle natural micro-motions. Characters with gentle breathing feel.",
+      "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸露，NSFW，塑料感CG，写实3D质感，高饱和刺眼配色，夸张表演，现代城市元素，文字，水印",
+      "seed": 20261007
+    },
+    {
+      "id": 8,
+      "length": 121,
+      "mode": "i2v",
+      "positive": "The camera slowly pulls back into a wide shot, the little girl and the little forest spirit walking one behind the other along the sunlit forest path, dappled tree shadows all around, clear soft transparent air, tree silhouettes gently swaying, the scene rests in a warm quiet peaceful atmosphere. Japanese hand-drawn 2D anime style, soft watercolor painted background, low-saturation warm pastel color palette, rich delicate forest plant details, gentle hand-drawn linework, subtle paper texture, soft gentle film grain, morning light filtering through leaves forming soft light beams, healing summer fairy-tale atmosphere, quiet, peaceful and poetic, slow smooth stable camera movement, subtle natural micro-motions. Characters with gentle breathing feel.",
+      "negative": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸露，NSFW，塑料感CG，写实3D质感，高饱和刺眼配色，夸张表演，现代城市元素，文字，水印",
+      "seed": 20261008
+    }
+  ]
+}

@@ -1,15 +1,70 @@
 # cephalon-comfyui-video
 
-> ⚠️ **Unofficial / 非官方第三方工具** —— 与端脑云（Cephalon Cloud）、Lucy（video.lucy.run）无任何隶属或背书关系。使用风险与费用自负，详见下方[免责声明](#️-免责声明-disclaimer)。
+不用本地显卡，在 Hermes 里用 API 调端脑云 ComfyUI 云端 GPU 生成视频/图片：5 秒视频 5 CEP，微信扫码直连 Workbench，免实例管理。
 
-Hermes Agent 技能 + 独立 CLI：通过 API 调用 [端脑云 Cephalon Cloud](https://cephalon.cloud) 算力跑 ComfyUI 视频/图片生成。全程免浏览器、可脚本化。链路均为 2026-10 实测验证。
+> English: Generate AI video/images via Cephalon Cloud (端脑云) ComfyUI cloud GPUs from Hermes — no local graphics card needed, 5-second video = 5 CEP via the lucy.run Workbench route, zero instance management.
 
-## 两条路线
+> ⚠️ 非官方第三方工具，与端脑云、Lucy 无隶属关系；使用风险与费用自负，详见文末[免责声明](#️-免责声明-disclaimer)。
+
+## 演示
+
+![雨后森林小木屋 · 8 镜链式成片预览](assets/demo-fairy-preview.gif)
+
+**雨后森林小木屋 · 治愈系日系手绘动画** —— 1 镜 T2V 起头 + 7 镜以上一镜尾帧链式 I2V，xfade 拼接成 36.6 秒 720p 成片。全部提示词、命令与实际花费见 [examples/multishot-chain.md](examples/multishot-chain.md)；完整成片见 [Release v1.1.0 附件](https://github.com/Geokkk/cephalon-comfyui-video/releases/tag/v1.1.0)。
+
+单条 10 秒文生视频实测记录（Workbench 路线，10 CEP）见 [examples/workbench-t2v.md](examples/workbench-t2v.md)。
+
+## 亮点
 
 | 路线 | 说明 | 计费 | 适用 |
 |---|---|---|---|
 | **Workbench 直连**（`scripts/lucy_run.py`，推荐） | 微信扫码登录 → SSO 换票 → video.lucy.run 提交 H3 模板（t2v/i2v/fl2v/r2v） | **100 units/秒**（5s=5 CEP、10s=10 CEP、15s=15 CEP），报价=实扣 | 单条/批量视频，秒级启动，免实例管理 |
 | **自建实例**（`scripts/run_fairy_pipeline.py`） | 创建 ComfyUI GPU 实例（RTX 4090），直接调 ComfyUI API | 36 CEP/小时（按实例租期） | 长链路多镜头、自定义工作流 |
+
+安全机制（防误扣费四件套）：
+
+- 提交前**强制零消耗报价**并展示价格，看到数字才继续；
+- **`--yes` 才会真实扣费**，不确认不花钱；
+- **幂等键先落盘再请求**，网络重试不会重复扣费；
+- 产物 **sha256 自校验**，下载不完整立即报错。
+
+## 安装
+
+三种方式均已实测可用，任选其一：
+
+**方式一：git clone（推荐，全功能）**
+
+```bash
+git clone https://github.com/Geokkk/cephalon-comfyui-video.git \
+  ~/.hermes/skills/devops/cephalon-comfyui-video
+```
+
+**方式二：npx skills add（跨 Agent，全量安装）**
+
+```bash
+npx skills add Geokkk/cephalon-comfyui-video
+# 预览：npx skills add Geokkk/cephalon-comfyui-video --list
+```
+
+实测会把 SKILL.md、scripts/、references/ 完整复制到 `.agents/skills/cephalon-comfyui-video/`，功能与方式一等价。
+
+**方式三：Hermes 直装（仅 SKILL.md 单文件，轻量）**
+
+```bash
+hermes skills install https://raw.githubusercontent.com/Geokkk/cephalon-comfyui-video/main/SKILL.md
+```
+
+注意：URL 直装只装 SKILL.md 本体，**不含 scripts/ 与 references/**，完整功能请用方式一或二。
+
+> 本仓库为根目录布局（SKILL.md 在仓库根），与 `hermes skills tap`（要求 `skills/<名>/SKILL.md` 布局）不兼容，实测 tap 装法不可用；如需 tap 管理可 clone 后手动放置。skills.sh 搜索暂未收录本仓库，可按上面的命令直装。
+
+## 前置条件
+
+1. **端脑云账号**：在[端脑云官网](https://cephalon.cloud)注册；
+2. **HMAC 密钥对**：公钥（32 位 hex）+ 私钥（64 位 hex），在端脑云控制台创建/获取（具体入口页面以控制台实际为准，欢迎 Issue 补充截图指引）；
+3. **CEP 余额**：100 units = 1 CEP；装好后随时可查：`python scripts/lucy_run.py balance`；
+4. **Workbench 路线**：需微信扫码登录（会话 JWT 24 小时有效）；
+5. **Python 3.8+**：脚本纯标准库，无需 pip install；自建实例路线另需 **ffmpeg**（拼接用）。
 
 ## 快速开始（Workbench 直连）
 
@@ -23,15 +78,6 @@ python scripts/lucy_run.py submit --template t2v --seconds 5 --yes \
 python scripts/lucy_run.py download <run_id>
 ```
 
-内置安全机制：提交前强制零消耗报价并展示价格；`--yes` 才会真实扣费；幂等键先落盘再请求（网络重试不会重复扣费）；产物 sha256 自校验。
-
-## 安装为 Hermes 技能
-
-```bash
-git clone https://github.com/Geokkk/cephalon-comfyui-video.git \
-  ~/.hermes/skills/devops/cephalon-comfyui-video
-```
-
 ## 文件
 
 | 文件 | 说明 |
@@ -41,7 +87,11 @@ git clone https://github.com/Geokkk/cephalon-comfyui-video.git \
 | `scripts/lucy_run.py` | Workbench 直连 CLI（登录/报价/锁价提交/轮询/下载校验/上传） |
 | `scripts/cephalon_api.py` | user-center HMAC 签名 + 实例（missions）CLI |
 | `scripts/cephalon_verify.py` / `cephalon_keys.py` | 链路验证 / 密钥模板（环境变量优先） |
-| `scripts/run_fairy_pipeline.py` / `concat_fairy.py` | 自建实例多镜头流水线与 ffmpeg 拼接 |
+| `scripts/run_fairy_pipeline.py` | 自建实例多镜头链式流水线（create/shot1/shot N/download/close） |
+| `scripts/build_ti2v_t2v.py` / `build_ti2v_i2v.py` | Wan2.2 TI2V 5B 工作流生成器（首镜 T2V / 链式 I2V） |
+| `scripts/shots_spec.json` | 8 镜成片规格与全部提示词（雨后森林小木屋，实测跑通） |
+| `scripts/concat_fairy.py` | xfade 逐级拼接成片 |
+| `examples/` | 真实跑通示例：命令 + 提示词 + 花费 |
 
 ## 费用与安全红线
 
