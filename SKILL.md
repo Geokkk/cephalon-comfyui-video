@@ -18,6 +18,7 @@ metadata:
 
 完整可运行脚本（本仓库 `scripts/`）：
 - `lucy_run.py` — **Workbench 直连 CLI（推荐路线，免实例）**：微信扫码登录 → SSO 建会话 → 零消耗报价 → 锁价提交（幂等键防重复扣费）→ 轮询 → sha256 校验下载 → 图片素材上传。四模板（t2v/i2v/fl2v/r2v）2026-10-14 全部实跑验证。
+- `templates/shot_driver.py` — 任务单式多镜头链式的单镜执行器模板（t2v 首镜 + 尾帧链 i2v + 质检抽帧 + 台账与预算守护），复制后改 3 个路径常量；配套纪律见 references/lucy-workflow-api.md「链式多镜任务单执行纪律」。
 - `cephalon_api.py` — user-center HMAC 签名 + 实例（missions）CLI
 - `cephalon_verify.py` — 验证链路；`cephalon_keys.py` — 密钥模板（env 变量优先）
 - `run_fairy_pipeline.py` / `concat_fairy.py` — 自建实例多镜头流水线（旧路线）
@@ -38,6 +39,22 @@ python scripts/lucy_run.py download <run_id>
 
 红线：**计价 100 units/秒**（5s=5 CEP、10s=10 CEP、15s=15 CEP）；扣费在提交瞬间，running 后不可取消；提交前务必看脚本打印的报价。参数细节与踩坑见 reference。
 
+### 微信扫码登录的时效性陷阱（2026-10 实测）
+
+- `/v1/qr` 返回的二维码**仅 300 秒（5 分钟）有效**；聊天界面把图片渲染送达用户需额外几十秒到数分钟，**送达即过期**是常态。
+- 直接在对话发 PNG 图不可靠；必须把二维码托管到**本地 HTTP 服务（127.0.0.1:8788）**，页面每 3 秒自动刷新 `/qr.png`、后台每 240 秒换新码、并行轮询 `/v1/is_ticket_exist` 到期自动换 JWT。
+- 用户端通过 **SSH 隧道** 访问：`ssh -L 8788:127.0.0.1:8788 <server>`，浏览器打开 `http://localhost:8788` 扫码。守护进程见仓库 `scripts/login_daemon.py`。
+- 扫码成功后页面显示“登录成功”，JWT 自动落盘 `lucy_state/token.txt`，后续 `lucy_run.py` 直接可用 `--token-file`。
+
+### Workbench 分辨率限制（与 Wan2.2 原生不一致）
+
+- Workbench 四模板仅支持两档：**1664×960（标 480）** 与 **1920×1088（标 544）**。
+- **1280×704（Wan2.2 原生 720p）** 在 Workbench **不可用**；若任务要求该分辨率，必须走**自建实例路线**（`run_fairy_pipeline.py` + 同一份 `shots_spec.json`），并在生成完成后立即 `close` 实例防孤儿计费。
+
+## 用户任务单模式（多镜头链式成片交付）
+
+用户常用"任务单"文件（shots_spec.json + 门槛条款）下发整单任务，条款优先于脚本默认行为：①先查余额 + 第 1 镜零消耗报价，两个数字回报等确认——未经确认绝不加 --yes；②首镜试拍回传原片，等画风/链路确认再续链；③逐镜回报 run_id 与实扣 CEP，接近总预算红线（任务单给定）即停，总扣费用期初/期末余额差值核验（逐镜解析的数字会漏：重抽覆盖台账键、输出解析失败兑底）；④坏镜按任务单标准判定（角色特征丢失/面部漂移/烧字水印/血腥），判定前抽镜内中/尾段多帧确认趋势——全程一致的风格化演绎（如评书反派脸谱妆）不是漂移，别拿重抽费赌单帧观感；seed+1 重抽，同一镜上限 2 次，仍不合格停下交用户决定；⑤Workbench 跑不通改自建实例路线前先回报确认，完工立即 close 实例。
+
 ## 认证（实测验证，文档有坑）
 
 - HMAC-SHA256。签名串 = `JSON( relative_uri + 规范化body )`，密钥 = 私钥（64位hex），请求头 `Hmac-Key: 公钥(32位hex)` + `Hmac`。
@@ -47,6 +64,8 @@ python scripts/lucy_run.py download <run_id>
 - 公钥/私钥放反也 401。脚本已加自动对调重试。
 - GET 接口的 query 参数：**参数名用 snake_case**（page_index/page_size），但**双参数 query 必 401**（服务端限制，单参数 200）。mission_list 带查询参数不可用，跳过；直接用 create/status/access/close。
 - POST/PUT 接口：签名串 = URI + 规范化 body JSON 字符串（实测通过）。
+- 本机 HMAC 密钥放在**仓库外**的实战工作目录（`cephalon_keys.py`，KEY/SECRET 常量，严禁入库）。任务单即使声称"密钥已在环境变量"也先实测——环境变量常为空，直接 import 该目录的 cephalon_api 即可。
+- `cephalon_api.py` 有两个分叉版本：仓库/skill 副本的 `request()` 返回 `(status, body)` 元组，仓库外的旧实战版返回单个 dict 且密钥内置。sys.path 按插入顺序解析同名模块——只 insert 一个目录，两版返回值签名不同，解包方式不匹配会直接崩。
 
 ## API 端点（base: https://prod.unicorn.org.cn/cephalon/user-center）
 
