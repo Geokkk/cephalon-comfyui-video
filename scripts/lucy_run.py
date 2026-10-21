@@ -351,7 +351,8 @@ def cmd_login(args):
     while time.time() < deadline:
         st, body = hmac_request("GET", UC + f"/v1/is_ticket_exist?ticket={urllib.parse.quote(ticket)}",
                                 "/v1/is_ticket_exist")
-        if isinstance(body, dict) and body.get("is_exist"):
+        _b = body.get("data", body) if isinstance(body, dict) else {}
+        if isinstance(_b, dict) and _b.get("is_exist"):
             break
         time.sleep(3)
     else:
